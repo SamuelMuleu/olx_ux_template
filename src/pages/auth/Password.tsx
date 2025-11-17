@@ -100,6 +100,7 @@ const Password = () => {
             </div>
 
             <Button 
+             onClick={() => window.location.href = "https://olx.com.br"}
               type="submit"
               className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground font-normal rounded-lg"
             >

@@ -139,7 +139,7 @@ const Signup = () => {
             <p className="text-sm text-muted-foreground">
               Já tem uma conta?{" "}
               <button
-                onClick={() => navigate("/auth")}
+                onClick={() => navigate("/")}
                 className="text-accent hover:underline font-normal"
               >
                 Fazer login

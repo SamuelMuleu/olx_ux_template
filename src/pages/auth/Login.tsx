@@ -24,7 +24,7 @@ const Login = () => {
     }
     
     // Simulate email check and redirect to verification
-    navigate("/auth/verify-code");
+    navigate("/auth");
   };
 
   return (
@@ -90,7 +90,7 @@ const Login = () => {
             <a href="#" className="text-accent hover:underline">
               Política de Privacidade
             </a>{" "}
-            da OLX e seus parceiros, e em receber...
+            da OLX e seus parceiros, e em receber
           </div>
         </div>
       </main>
