@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Logo from "@/components/Logo";
 import { MessageSquare, Lock, Info, ChevronRight } from "lucide-react";
+import msg from "../../assets/msg.png";
+import senha from "../../assets/senha.png";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -32,12 +34,12 @@ const Login = () => {
           <div className="space-y-3">
             {/* E-mail Option */}
             <button
-              onClick={() => navigate("/auth/verify-code")}
+              onClick={() => navigate("/auth/verify-code-email")}
               className="w-full p-4 bg-card border border-border rounded-lg hover:bg-accent/5 transition-colors flex items-center gap-4 group"
             >
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <MessageSquare className="w-6 h-6 text-primary" />
-              </div>
+              
+             <img src={msg} alt="" />
+          
               <div className="flex-1 text-left">
                 <h3 className="font-medium text-foreground">E-mail</h3>
                 <p className="text-sm text-muted-foreground">
@@ -52,9 +54,9 @@ const Login = () => {
               onClick={() => navigate("/auth/password")}
               className="w-full p-4 bg-card border border-border rounded-lg hover:bg-accent/5 transition-colors flex items-center gap-4 group"
             >
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <Lock className="w-6 h-6 text-primary" />
-              </div>
+              
+               <img src={senha} alt="" />
+            
               <div className="flex-1 text-left">
                 <h3 className="font-medium text-foreground">Senha</h3>
                 <p className="text-sm text-muted-foreground">
@@ -82,14 +84,27 @@ const Login = () => {
             </button>
           </div>
 
-          <div className="pt-4">
-            <Button
-              variant="ghost"
-              onClick={() => navigate("/")}
-              className="text-primary hover:text-primary/80 font-medium"
-            >
-              Voltar
-            </Button>
+        <div className="pt-4 flex items-center justify-center ">
+    <Button
+    
+      variant="ghost"
+      onClick={() => navigate("/")}
+     
+      className="flex items-center justify-center text-[#5C307F] hover:text-[#5C307F]/80"
+    >
+      Voltar
+    </Button>
+</div>
+<div className="text-center text-xs text-muted-foreground pt-4">
+            Ao continuar, você concorda com os{" "}
+            <a href="#" className="text-accent hover:underline">
+              Termos de Uso
+            </a>{" "}
+            e a{" "}
+            <a href="#" className="text-accent hover:underline">
+              Política de Privacidade
+            </a>{" "}
+            da OLX e seus parceiros, e em receber
           </div>
         </div>
       </main>

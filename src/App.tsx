@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/auth/Login";
 import VerifyCode from "./pages/auth/VerifyCode";
+import VerifyCodeEmail from "./pages/auth/VerifyCodeEmail";
 import VerifyPhone from "./pages/auth/VerifyPhone";
 import Password from "./pages/auth/Password";
 import Signup from "./pages/auth/Signup";
@@ -23,7 +24,8 @@ const App = () => (
           {/* <Route path="/" element={<Index />} /> */}
           <Route path="/" element={<Login />} />
           <Route path="/auth" element={<Auth/>}/>
-          <Route path="/auth/verify-code" element={<VerifyCode />} />
+          <Route path="/auth/verify-code-email" element={<VerifyCodeEmail />} />
+          <Route path="/auth/verify-phone" element={<VerifyCode />} />
           <Route path="/auth/verify-phone" element={<VerifyPhone />} />
           <Route path="/auth/password" element={<Password />} />
           <Route path="/auth/signup" element={<Signup />} />

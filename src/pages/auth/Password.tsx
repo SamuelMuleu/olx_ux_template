@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import Logo from "@/components/Logo";
 import { Eye, EyeOff, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
+import cloudfire from "../../assets/cloudfire.png";
 
 const Password = () => {
   const navigate = useNavigate();
@@ -90,13 +91,12 @@ const Password = () => {
               </div>
             )}
 
-            <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+            <div className="flex items-center justify-center">
               <img 
-                src="https://cdn.worldvectorlogo.com/logos/cloudflare-1.svg" 
+                src={cloudfire}
                 alt="Cloudflare" 
-                className="h-4"
+                className="h-16"
               />
-              <span>Protegido por</span>
             </div>
 
             <Button 
@@ -110,7 +110,7 @@ const Password = () => {
 
           <div className="flex justify-between text-sm">
             <button
-              onClick={handleBack}
+              onClick={()=>navigate('/auth')}
               className="text-accent hover:underline font-normal"
             >
               Voltar

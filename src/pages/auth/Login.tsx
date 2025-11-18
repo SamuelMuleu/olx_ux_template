@@ -51,7 +51,7 @@ const Login = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="h-12 rounded-lg border-input"
+               className="h-12 rounded-lg   focus-visible:ring-[#5C307F]"
                 placeholder=""
               />
             </div>

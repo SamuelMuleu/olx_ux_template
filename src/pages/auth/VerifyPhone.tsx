@@ -13,7 +13,7 @@ const VerifyPhone = () => {
     toast.success("Código enviado para seu telefone!");
     // In a real app, this would send SMS
     setTimeout(() => {
-      navigate("/auth/password");
+      navigate("/auth/verify-code");
     }, 1500);
   };
 
@@ -60,7 +60,7 @@ const VerifyPhone = () => {
             </Button>
 
             <Button 
-              onClick={handleBack}
+            onClick={() => navigate("/auth")}
               variant="outline"
               className="w-full h-12 border-primary text-primary hover:bg-primary/5 font-normal rounded-lg"
             >
