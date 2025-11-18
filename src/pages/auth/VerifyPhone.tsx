@@ -47,6 +47,7 @@ const VerifyCode = () => {
         toast.success("Código reenviado!");
         setCode(["", "", "", "", "", ""]);
         inputRefs.current[0]?.focus();
+        console.log("oi")
     };
 
 
