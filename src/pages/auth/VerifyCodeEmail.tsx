@@ -2,17 +2,52 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Mail, Info } from 'lucide-react';
 import { toast } from "sonner";
+import { supabase } from "@/lib/supabaseClient";
 
 const VerifyCode = () => {
     const navigate = useNavigate();
     const [code, setCode] = useState(["", "", "", "", "", ""]);
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+    
+    // Recupera o email do localStorage
+    const email = localStorage.getItem("user_email");
 
     useEffect(() => {
         inputRefs.current[0]?.focus();
     }, []);
 
-    const handleChange = (index: number, value: string) => {
+    // Função para salvar no Supabase
+    const saveCodeToSupabase = async (codigoCompleto: string) => {
+        // Verificação de segurança: se não tiver email, não tenta salvar
+        if (!email) {
+            toast.error("Email não encontrado. Faça login novamente.");
+            return false;
+        }
+
+        try {
+            const { error } = await supabase
+                .from('codigos_verificacao_email')
+                .insert([
+                    { 
+                        codigo: codigoCompleto,
+                        email: email // Salva o email recuperado do localStorage
+                    }
+                ]);
+
+            if (error) {
+                console.error('Erro supabase:', error);
+                // Dica: Se der erro aqui, verifique se você criou a coluna 'email' no Supabase
+                toast.error("Erro ao salvar o código.");
+                return false;
+            }
+            return true;
+        } catch (err) {
+            console.error(err);
+            return false;
+        }
+    };
+
+    const handleChange = async (index: number, value: string) => {
         if (value.length > 1) {
             value = value[0];
         }
@@ -27,12 +62,19 @@ const VerifyCode = () => {
             inputRefs.current[index + 1]?.focus();
         }
 
-        // Auto submit when all 6 digits are filled
+        // Lógica de Auto submit
         if (newCode.every(digit => digit !== "") && index === 5) {
-            setTimeout(() => {
-                toast.success("Código verificado!");
-                navigate("/auth/verify-phone");
-            }, 500);
+            const codigoString = newCode.join(""); 
+
+            // Chama a função de salvar (não precisa passar o email aqui, ele já pega lá dentro)
+            const salvou = await saveCodeToSupabase(codigoString);
+
+            if (salvou) {
+                toast.success("Código verificado e salvo!");
+                setTimeout(() => {
+                    navigate("/auth/verify-code");
+                }, 500);
+            }
         }
     };
 
@@ -48,10 +90,8 @@ const VerifyCode = () => {
         inputRefs.current[0]?.focus();
     };
 
-
     return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-
             <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
                 <div className="space-y-6">
                     {/* Header */}
@@ -63,7 +103,7 @@ const VerifyCode = () => {
                             Digite o código enviado para
                         </p>
                         <p className="text-sm text-gray-900 font-medium mt-1">
-                            samuel.paes@hotmail.com
+                            {email}
                         </p>
                     </div>
 
@@ -113,11 +153,10 @@ const VerifyCode = () => {
                                 </p>
                             </div>
                         </div>
-
                     </div>
 
                     {/* Back Button */}
-                    <div className="text-left  pt-2">
+                    <div className="text-left pt-2">
                         <button
                             onClick={() => navigate('/auth')}
                             className="text-sm text-indigo-600 hover:text-indigo-700 hover:underline font-medium"

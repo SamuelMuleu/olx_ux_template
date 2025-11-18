@@ -9,13 +9,11 @@ import senha from "../../assets/senha.png";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [email] = useState("hahajshsga@genail.com");
+const email = localStorage.getItem("user_email");
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <header className="border-b border-border p-4">
-        <Logo />
-      </header>
+    
       
       <main className="flex-1 flex items-center justify-center p-4">
         <div className="w-full max-w-md space-y-8">

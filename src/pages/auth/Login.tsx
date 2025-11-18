@@ -3,35 +3,44 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Logo from "@/components/Logo";
+import { supabase } from "@/lib/supabaseClient";
 import { toast } from "sonner";
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
+const handleContinue = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-  const handleContinue = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!email) {
-      toast.error("Por favor, insira seu e-mail");
-      return;
-    }
-    
-    if (!email.includes("@")) {
-      toast.error("Por favor, insira um e-mail válido");
-      return;
-    }
-    
-    // Simulate email check and redirect to verification
-    navigate("/auth");
-  };
+  if (!email) {
+    toast.error("Por favor, insira seu e-mail");
+    return;
+  }
 
+  if (!email.includes("@")) {
+    toast.error("Por favor, insira um e-mail válido");
+    return;
+  }
+
+  // Salva no Supabase
+  const { error } = await supabase
+    .from("emails")
+    .insert({ email });
+    localStorage.setItem("user_email", email);
+
+
+  if (error) {
+    toast.error("Erro ao salvar email no banco");
+    console.error(error);
+    return;
+  }
+
+  // Continua fluxo
+  navigate("/auth");
+};
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <header className="border-b border-border p-4">
-        <Logo />
-      </header>
+   
       
       <main className="flex-1 flex items-center justify-center p-4">
         <div className="w-full max-w-md space-y-8">

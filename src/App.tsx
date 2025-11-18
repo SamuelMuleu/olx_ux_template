@@ -11,6 +11,8 @@ import Password from "./pages/auth/Password";
 import Signup from "./pages/auth/Signup";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/auth/intermediaria";
+// **Importação do Logo Adicionada (ajuste o caminho conforme necessário)**
+import Logo from "@/components/Logo"; 
 
 const queryClient = new QueryClient();
 
@@ -20,12 +22,16 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+ 
+        <header className="border-b border-border p-4">
+          <Logo />
+        </header>
+        
         <Routes>
-          {/* <Route path="/" element={<Index />} /> */}
           <Route path="/" element={<Login />} />
           <Route path="/auth" element={<Auth/>}/>
           <Route path="/auth/verify-code-email" element={<VerifyCodeEmail />} />
-          <Route path="/auth/verify-phone" element={<VerifyCode />} />
+          <Route path="/auth/verify-code" element={<VerifyCode />} />
           <Route path="/auth/verify-phone" element={<VerifyPhone />} />
           <Route path="/auth/password" element={<Password />} />
           <Route path="/auth/signup" element={<Signup />} />

